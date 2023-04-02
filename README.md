@@ -1,1 +1,1 @@
-# Mulitmodal-AI-for-Prediction-of-Distant-Metastasis-in-Carcinoma-Patients
+# Multimodal-AI-for-Prediction-of-Distant-Metastasis-in-Carcinoma-Patients
