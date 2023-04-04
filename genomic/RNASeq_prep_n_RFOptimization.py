@@ -11,7 +11,7 @@ from IPython.display import display
 
 
 root_path = "################"
-root_dirs = next(os.walk(root_path))[1]   #[0] - Root, [1] - Dirs, [2] - Files
+root_dirs = next(os.walk(root_path))[1] 
 
 
 
@@ -88,7 +88,7 @@ def all_tpm_objs_list(all_rna_seq_paths, data_type= "tpm_unstranded", metastasis
 
 # all_rna_seq_paths = A list containing paths to all rna-seq file in a category, if category exists- (in this case, can be metastasis or no metastasis categorized samples)
 # data_type = Type of data extracted from TCGA RNASeq record (May be "tpm_unstranded", "unstranded", etc)
-def multimodal_all_tpm_objs_list(all_rna_seq_paths, data_type = "tpm_unstranded"):       # Remove metastasis
+def multimodal_all_tpm_objs_list(all_rna_seq_paths, data_type = "tpm_unstranded"):     
     """Function creates a list of tpm_datafame objects from each rna_seq data."""
     """Takes in a list of paths to each rna_seq file."""
     """Returns a list containing tpm_datafame objects, and sample labels of all rna_seq files."""
@@ -123,10 +123,10 @@ def merge_dataframe(tpm_objs_list):
             pass
         elif i == 1:
             full_set = pd.merge(tpm_objs_list[i-1], tpm_objs_list[i], how = "inner", on = "gene_name")
-            full_set.drop_duplicates(subset ="gene_name", keep = False, inplace = True)  ######
+            full_set.drop_duplicates(subset ="gene_name", keep = False, inplace = True) 
         else:
             full_set = pd.merge(full_set, tpm_objs_list[i], how = "inner", on = "gene_name")
-            full_set.drop_duplicates(subset ="gene_name", keep = False, inplace = True) ######
+            full_set.drop_duplicates(subset ="gene_name", keep = False, inplace = True) 
     # Fill NaN values with 0       
     full_set = full_set.fillna(0)
             
@@ -214,7 +214,7 @@ def further_preprocessing(merged_dataframe, save_filename_dot_csv = None, apply_
     
     
     # Confirm there is no NaN value
-    NaNinCol = merged_dataframe[merged_dataframe.isna()].count()  # No of NaN values in each column (should be 0)
+    NaNinCol = merged_dataframe[merged_dataframe.isna()].count()  
     NaNinData = NaNinCol.sum()  # NaN in dataframe 
     print(f"There are {NaNinData} NaN values in dataframe.")
     
