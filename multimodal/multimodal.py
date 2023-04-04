@@ -56,25 +56,6 @@ def barc_path_df(data_root):
 
 
 
-# # data_root = Root folder (for HNSC, PAAD, or BLCA) containing dir for each patient
-# def barc_path_num_df(data_root):
-#     """
-#     Creates a 2 column dataframe of patient barcode, and number of patient tiles files.
-#     """
-#     tiles_path_list = barcode_tiles_path_list(data_root)
-#     barcode_path_tuple_list = []
-#     for patient_path in tiles_path_list:
-#         barc_srt_ind = patient_path.find("TCGA")
-#         patient_barcode = patient_path[barc_srt_ind : barc_srt_ind + 12]        
-#         tupl = (patient_barcode, len(os.listdir(patient_path)))
-#         barcode_path_tuple_list.append(tupl)
-
-#     dataframe = pd.DataFrame(barcode_path_tuple_list, columns=["barcode", "tiles_number"])
-    
-#     return dataframe
-
-
-
 # tiles_path = One patient's tiles directory
 def barcode_tiles_arr(tiles_path):
     
