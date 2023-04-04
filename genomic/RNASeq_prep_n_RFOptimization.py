@@ -10,7 +10,7 @@ import sklearn
 from IPython.display import display
 
 
-root_path = "/home/io3247/HNC"
+root_path = "################"
 root_dirs = next(os.walk(root_path))[1]   #[0] - Root, [1] - Dirs, [2] - Files
 
 
