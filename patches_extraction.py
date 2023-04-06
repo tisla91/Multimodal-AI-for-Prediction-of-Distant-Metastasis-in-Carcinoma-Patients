@@ -80,6 +80,44 @@ def filtering(input_img,thresh_min):
     return np.sum(binary_min)/float(binary_min.size)           
 
 
+
+# random_sel = Index of randomly selected patches.
+# patch_ext_obj = Patch extractor object containing extracted patches.
+# no_patch_sel = Number of patches to select.
+
+def sel_tissue_patches(random_sel, patch_ext_obj, no_patch_sel):
+
+    """ Selects a given number of patches with tissue area above 80%."""
+    
+    tissue_patch_lst = []
+    for index in list(random_sel):
+        index = int(index)
+        if len(tissue_patch_lst) >= no_patch_sel:
+            break
+        elif filtering(patch_extractor[int(index)], 40) > 0.8:
+            tissue_patch_lst.append(patch_extractor[index])
+
+     return tissue_patch_lst
+
+
+
+# patches_lst = list containing patches
+def sel_nuclei_patches(patches_lst):
+     
+    """Sort patches by nuclei content."""
+    
+    nuclei_scores_dict = {}
+    for index, patch in enumerate(patches_lst):
+        patch_nuclei_score = nuclei_eosin_content(patch)
+        nuclei_scores_dict[index] = patch_nuclei_score
+    sorted_nuclei_scores_dict = dict(sorted(nuclei_scores_dict.items(), key=lambda x:x[1]))
+    patch_nuclei_index = list(sorted_nuclei_scores_dict.keys())  
+    reversed_patch_nuclei_index = patch_nuclei_index[::-1]
+
+    return reversed_patch_nuclei_index 
+
+
+
 # root = root directory.
 # target = image or image path to be used as standard for normalization (Vahadane stain normalization).
 # tissue_threshold = Numeric representation (0 to 1) of tissue area in patch. - 0.8 suggested
@@ -121,22 +159,10 @@ def extract_patches(root, target, tissue_threshold):
             continue
                         
         # Select first 200 that pass filtering (>80% tissue area)
-        sel200_lst = []
-        for index in list(random_sel):
-            index = int(index)
-            if len(sel200_lst) >= 200:
-                break
-            elif filtering(patch_extractor[int(index)], 40) > 0.8:
-                sel200_lst.append(patch_extractor[index])
+        sel200_lst = sel_tissue_patches(random_sel, patch_extractor, 200)
                 
-        # Select top 60 images with highest nuclei scores content
-        nuclei_scores_dict = {}
-        for index, patch in enumerate(sel200_lst):
-            patch_nuclei_score = nuclei_eosin_content(patch)
-            nuclei_scores_dict[index] = patch_nuclei_score
-        sorted_nuclei_scores_dict = dict(sorted(nuclei_scores_dict.items(), key=lambda x:x[1]))
-        patch_nuclei_index = list(sorted_nuclei_scores_dict.keys())  
-        reversed_patch_nuclei_index = patch_nuclei_index[::-1] 
+        # Select top 60 images with highest nuclei scores content 
+        reversed_patch_nuclei_index = sel_nuclei_patches(sel200_lst)
         
         save_count = 0
         for index in reversed_patch_nuclei_index:            
